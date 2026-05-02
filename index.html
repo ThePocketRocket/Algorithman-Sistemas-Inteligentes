@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simulação minimalista do Pac-Man usando Vanilla JS.">
+    <title>Pac-Man Minimalista</title>
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <dialog id="gameOverModal" class="modal">
+        <h2 style="background: linear-gradient(90deg, #ff3333, #ff6666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GAME OVER!</h2>
+        <p style="margin-bottom: 2rem;">Você foi pego pelo Inimigo!</p>
+        <button id="btnRetry" class="btn-secondary" style="background: linear-gradient(135deg, #ff3333, #cc0000);">Tentar Novamente</button>
+    </dialog>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Configurações</h3>
+            <button id="btnCloseSidebar" class="btn-close">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <h4>Construtor</h4>
+            <div class="control-group">
+                <label for="mapSelect">Mapa:</label>
+                <select id="mapSelect">
+                    <option value="default">Mapa Padrão</option>
+                    <option value="custom">Mapa Customizado</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="paintToolSelect">Ferramenta de Pintura:</label>
+                <select id="paintToolSelect">
+                    <option value="erase">Apagar (Chão)</option>
+                    <option value="wall">Colocar Parede</option>
+                    <option value="slow">Colocar Lama</option>
+                    <option value="player">Posicionar Jogador</option>
+                    <option value="enemy">Posicionar Inimigo</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="playerSpeedRange">Cooldown Jogador: <span id="playerSpeedValue">150</span>ms</label>
+                <input type="range" id="playerSpeedRange" min="50" max="1000" step="50" value="150">
+            </div>
+
+            <h4>Inteligência Artificial</h4>
+            <div class="control-group">
+                <label for="algoSelect">Algoritmo:</label>
+                <select id="algoSelect">
+                    <option value="astar">A-Star (A*)</option>
+                    <option value="greedy">Busca Gulosa (Greedy)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="speedRange">Tickrate IA: <span id="speedValue">500</span>ms</label>
+                <input type="range" id="speedRange" min="100" max="1000" step="100" value="500">
+            </div>
+        </div>
+    </aside>
+
+    <button id="btnOpenSidebar" class="btn-floating" aria-label="Abrir Configurações">⚙️ Configurações</button>
+
+    <div class="app-wrapper">
+        <div class="top-bar">
+            <button id="btnPlay" class="btn-primary">PLAY / INICIAR SIMULAÇÃO</button>
+            <button id="btnRestart" class="btn-secondary">Reiniciar Partida</button>
+        </div>
+
+        <div id="game-container">
+            <!-- O grid será injetado aqui dinamicamente pelo ui.js -->
+        </div>
+
+        <!-- Controles Virtuais (D-Pad) -->
+        <div id="dpad" class="dpad">
+            <button id="btnUp" class="dpad-btn up">▲</button>
+            <button id="btnLeft" class="dpad-btn left">◄</button>
+            <button id="btnDown" class="dpad-btn down">▼</button>
+            <button id="btnRight" class="dpad-btn right">►</button>
+        </div>
+    </div>
+
+    <!-- Script como module para importar os outros arquivos -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>
