@@ -1,5 +1,6 @@
 /* Global Resets */
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -7,7 +8,9 @@ html, body {
     width: 100vw;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: inherit;
 }
 
@@ -27,13 +30,15 @@ body {
     display: block;
     width: 100%;
     text-align: center;
-    color: #FFFF00; /* Amarelo Pac-Man */
-    text-shadow: 3px 3px 0 #000, 
-                 -2px -2px 0 #000, 
-                  2px -2px 0 #000, 
-                 -2px  2px 0 #000, 
-                  2px  2px 0 #000,
-                  0px  0px 15px rgba(255, 255, 0, 0.4); /* Contorno escuro + brilho fraco */
+    color: #FFFF00;
+    /* Amarelo Pac-Man */
+    text-shadow: 3px 3px 0 #000,
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        2px 2px 0 #000,
+        0px 0px 15px rgba(255, 255, 0, 0.4);
+    /* Contorno escuro + brilho fraco */
     font-size: 2rem;
     margin-top: 20px;
     margin-bottom: 15px;
@@ -46,16 +51,18 @@ body {
     display: grid;
     /* Columns and rows defined in JS dynamically as 1fr */
     gap: 1px;
-    background-color: #333; /* Color of the grid lines */
+    background-color: #333;
+    /* Color of the grid lines */
     border: 4px solid #444;
     padding: 2px;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-    
+
     /* Responsividade fluida */
     width: 95vw;
     max-width: 500px;
-    aspect-ratio: 1 / 1; /* Mantém o tabuleiro sempre quadrado */
+    aspect-ratio: 1 / 1;
+    /* Mantém o tabuleiro sempre quadrado */
     margin: 0 auto;
 }
 
@@ -71,29 +78,31 @@ body {
 
 .cell-1 {
     /* Parede (Wall) */
-    background-color: #0d47a1; /* Deep Blue */
+    background-color: #0d47a1;
+    /* Deep Blue */
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .cell-2 {
     /* Zona de Lentidão (Slow Zone) */
-    background-color: #2c2c2c; /* Dark Gray */
-    background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 5px,
-        rgba(0, 0, 0, 0.2) 5px,
-        rgba(0, 0, 0, 0.2) 10px
-    );
+    background-color: #2c2c2c;
+    /* Dark Gray */
+    background-image: repeating-linear-gradient(45deg,
+            transparent,
+            transparent 5px,
+            rgba(0, 0, 0, 0.2) 5px,
+            rgba(0, 0, 0, 0.2) 10px);
 }
 
 /* Personagens */
 .player {
     background-color: #ffcc00;
-    border-radius: 50%; /* Pac-man is round usually, but requested square, I'll use slightly rounded square */
+    border-radius: 50%;
+    /* Pac-man is round usually, but requested square, I'll use slightly rounded square */
     border-radius: 4px;
     box-shadow: 0 0 10px #ffcc00;
-    transform: scale(0.8); /* Make it slightly smaller than the cell */
+    transform: scale(0.8);
+    /* Make it slightly smaller than the cell */
 }
 
 .enemy {
@@ -113,7 +122,8 @@ body {
     text-align: center;
     color: #fff;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    margin: auto; /* Centers the <dialog> automatically */
+    margin: auto;
+    /* Centers the <dialog> automatically */
 }
 
 .modal::backdrop {
@@ -163,11 +173,16 @@ body {
 .expanded-astar {
     position: relative;
 }
+
 .expanded-astar::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(76, 175, 80, 0.3); /* Verde translúcido */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(76, 175, 80, 0.3);
+    /* Verde translúcido */
     pointer-events: none;
     z-index: 1;
 }
@@ -175,13 +190,17 @@ body {
 .path-astar {
     position: relative;
 }
+
 .path-astar::after {
     content: '';
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 8px; height: 8px;
-    background-color: #4CAF50; /* Verde forte */
+    width: 8px;
+    height: 8px;
+    background-color: #4CAF50;
+    /* Verde forte */
     border-radius: 50%;
     pointer-events: none;
     z-index: 2;
@@ -192,11 +211,16 @@ body {
 .expanded-greedy {
     position: relative;
 }
+
 .expanded-greedy::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(156, 39, 176, 0.3); /* Roxo translúcido */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(156, 39, 176, 0.3);
+    /* Roxo translúcido */
     pointer-events: none;
     z-index: 1;
 }
@@ -204,13 +228,17 @@ body {
 .path-greedy {
     position: relative;
 }
+
 .path-greedy::after {
     content: '';
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 8px; height: 8px;
-    background-color: #9C27B0; /* Roxo forte */
+    width: 8px;
+    height: 8px;
+    background-color: #9C27B0;
+    /* Roxo forte */
     border-radius: 50%;
     pointer-events: none;
     z-index: 2;
@@ -235,7 +263,7 @@ body {
     height: 100vh;
     background-color: #2a2a2a;
     border-right: 2px solid #444;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.8);
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.8);
     z-index: 100;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
@@ -299,7 +327,7 @@ body {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     z-index: 50;
     transition: background 0.2s, transform 0.1s;
 }
@@ -346,7 +374,8 @@ input[type=range] {
     cursor: pointer;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
     padding: 12px 24px;
     font-size: 1.1rem;
     font-weight: 700;
@@ -441,7 +470,8 @@ input[type=range] {
 /* ====== MOBILE (Telas Pequenas) ====== */
 @media (max-width: 768px) {
     #btnOpenSidebar span {
-        display: none; /* Oculta texto, deixa só o ícone */
+        display: none;
+        /* Oculta texto, deixa só o ícone */
     }
 
     .btn-floating {
@@ -461,7 +491,8 @@ input[type=range] {
 
     .action-buttons {
         position: fixed;
-        bottom: 240px; /* Posicionado acima do D-Pad */
+        bottom: 240px;
+        /* Posicionado acima do D-Pad */
         left: 50%;
         transform: translateX(-50%);
         width: max-content;
@@ -471,18 +502,20 @@ input[type=range] {
         padding: 10px;
         border-radius: 12px;
         backdrop-filter: blur(5px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     .app-wrapper {
         justify-content: flex-start;
         padding-top: 20px;
-        padding-bottom: 300px; /* Espaço pro grid não ficar sob os controles fixos */
+        padding-bottom: 300px;
+        /* Espaço pro grid não ficar sob os controles fixos */
     }
 
     #game-container {
         margin-top: 10px;
-        margin-bottom: 280px; /* Garante que o grid não fique escondido sob os controles se rolar */
+        margin-bottom: 280px;
+        /* Garante que o grid não fique escondido sob os controles se rolar */
         max-width: 95vw;
     }
 }
@@ -490,7 +523,8 @@ input[type=range] {
 /* ====== DESKTOP (Telas Grandes) ====== */
 @media (min-width: 769px) {
     .dpad {
-        display: none; /* Oculta D-Pad no Desktop */
+        display: none;
+        /* Oculta D-Pad no Desktop */
     }
 
     .btn-floating {
@@ -501,7 +535,8 @@ input[type=range] {
 
     .action-buttons {
         position: fixed;
-        bottom: 80px; /* Logo acima do botão Configurações */
+        bottom: 80px;
+        /* Logo acima do botão Configurações */
         left: 20px;
         width: auto;
         margin: 0;
@@ -513,9 +548,5 @@ input[type=range] {
 
     .app-wrapper {
         justify-content: center;
-    }
-
-    #game-container {
-        margin-top: 40px;
     }
 }

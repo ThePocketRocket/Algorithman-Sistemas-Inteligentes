@@ -77,21 +77,23 @@ export function applyPaintTool(x, y) {
     }
 
     const tool = gameState.paintTool;
+    const isPlayerPos = (x === gameState.player.x && y === gameState.player.y);
+    const isEnemyPos = (x === gameState.enemy.x && y === gameState.enemy.y);
+    const isWall = (mapLayout[y][x] === 1);
 
-    if (tool === 'wall') {
-        mapLayout[y][x] = 1;
-    } else if (tool === 'slow') {
-        mapLayout[y][x] = 2;
+    if (tool === 'wall' || tool === 'slow') {
+        if (isPlayerPos || isEnemyPos) return false;
+        mapLayout[y][x] = tool === 'wall' ? 1 : 2;
     } else if (tool === 'erase') {
         mapLayout[y][x] = 0;
     } else if (tool === 'player') {
+        if (isWall || isEnemyPos) return false;
         gameState.player.x = x;
         gameState.player.y = y;
-        if (mapLayout[y][x] === 1) mapLayout[y][x] = 0; // Limpa a parede para o jogador não ficar preso
     } else if (tool === 'enemy') {
+        if (isWall || isPlayerPos) return false;
         gameState.enemy.x = x;
         gameState.enemy.y = y;
-        if (mapLayout[y][x] === 1) mapLayout[y][x] = 0;
     }
     
     return true;
