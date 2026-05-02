@@ -465,10 +465,43 @@ input[type=range] {
     grid-row: 3;
 }
 
+/* Telemetry Panel */
+.telemetry-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(20, 20, 20, 0.85);
+    border: 2px solid #555;
+    padding: 15px;
+    border-radius: 8px;
+    color: #00FF00; /* Neon Hacker Green */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    line-height: 2;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    pointer-events: none; /* Let clicks pass through if needed */
+}
+
 /* Responsividade / Media Queries */
 
 /* ====== MOBILE (Telas Pequenas) ====== */
 @media (max-width: 768px) {
+    .telemetry-panel {
+        position: static; /* Coloca no fluxo da página, abaixo do grid */
+        width: 95vw;
+        max-width: 500px;
+        margin-top: 15px;
+        font-size: 0.5rem;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 5px;
+        box-shadow: none; /* Simplifica o visual para não brigar com os botões */
+    }
+
     #btnOpenSidebar span {
         display: none;
         /* Oculta texto, deixa só o ícone */
@@ -514,8 +547,6 @@ input[type=range] {
 
     #game-container {
         margin-top: 10px;
-        margin-bottom: 280px;
-        /* Garante que o grid não fique escondido sob os controles se rolar */
         max-width: 95vw;
     }
 }
@@ -535,13 +566,13 @@ input[type=range] {
 
     .action-buttons {
         position: fixed;
-        bottom: 80px;
-        /* Logo acima do botão Configurações */
-        left: 20px;
+        bottom: 20px;
+        right: 20px;
+        left: auto;
         width: auto;
         margin: 0;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-end;
         z-index: 50;
         gap: 10px;
     }

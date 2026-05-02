@@ -117,6 +117,7 @@ function reconstructPath(nodeData, goalKey) {
  * @param {Function} heuristica Função heurística (Opcional, default: heuristicaForte)
  */
 export function calcularBuscaAStar(mapData, startNode, goalNode, heuristica = heuristicaForte) {
+    const t0 = performance.now();
     let openSet = []; // Fronteira de nós a serem avaliados
     const closedSet = new Set(); // Nós já avaliados
     const nodeData = {}; // Dicionário que guarda as informações de cada nó visitado
@@ -145,10 +146,12 @@ export function calcularBuscaAStar(mapData, startNode, goalNode, heuristica = he
 
         // Condição de parada: chegou ao objetivo
         if (current.x === goalNode.x && current.y === goalNode.y) {
+            const t1 = performance.now();
             return {
                 caminhoFinal: reconstructPath(nodeData, currentKey),
                 nosExpandidos,
-                custoTotal: current.g
+                custoTotal: current.g,
+                tempoMs: (t1 - t0).toFixed(2)
             };
         }
 
@@ -183,7 +186,8 @@ export function calcularBuscaAStar(mapData, startNode, goalNode, heuristica = he
     }
 
     // Retorna vazio caso não encontre um caminho
-    return { caminhoFinal: [], nosExpandidos, custoTotal: 0 };
+    const t1 = performance.now();
+    return { caminhoFinal: [], nosExpandidos, custoTotal: 0, tempoMs: (t1 - t0).toFixed(2) };
 }
 
 /**
@@ -197,6 +201,7 @@ export function calcularBuscaAStar(mapData, startNode, goalNode, heuristica = he
  * @param {Function} heuristica Função heurística (Opcional, default: heuristicaForte)
  */
 export function calcularBuscaGulosa(mapData, startNode, goalNode, heuristica = heuristicaForte) {
+    const t0 = performance.now();
     let openSet = [];
     const closedSet = new Set();
     const nodeData = {}; 
@@ -222,10 +227,12 @@ export function calcularBuscaGulosa(mapData, startNode, goalNode, heuristica = h
         nosExpandidos.push({ x: current.x, y: current.y });
 
         if (current.x === goalNode.x && current.y === goalNode.y) {
+            const t1 = performance.now();
             return {
                 caminhoFinal: reconstructPath(nodeData, currentKey),
                 nosExpandidos,
-                custoTotal: current.g
+                custoTotal: current.g,
+                tempoMs: (t1 - t0).toFixed(2)
             };
         }
 
@@ -254,7 +261,8 @@ export function calcularBuscaGulosa(mapData, startNode, goalNode, heuristica = h
         }
     }
 
-    return { caminhoFinal: [], nosExpandidos, custoTotal: 0 };
+    const t1 = performance.now();
+    return { caminhoFinal: [], nosExpandidos, custoTotal: 0, tempoMs: (t1 - t0).toFixed(2) };
 }
 
 

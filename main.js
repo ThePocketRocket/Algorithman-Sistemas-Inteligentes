@@ -1,7 +1,7 @@
-import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap } from './state.js';
-import { drawGrid, drawCharacters, drawAIPath, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls } from './ui.js';
+import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, getHeuristic } from './state.js';
+import { drawGrid, drawCharacters, drawAIPath, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls, updateTelemetry } from './ui.js';
 import { setupInput } from './input.js';
-import { calcularBuscaAStar, calcularBuscaGulosa } from './ai.js';
+import { calcularBuscaAStar, calcularBuscaGulosa, heuristicaForte, heuristicaFraca } from './ai.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById('game-container');
@@ -94,11 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function loopInimigo() {
         if (getGamePhase() !== 'PLAYING') return;
 
-        // Troca Dinâmica de Algoritmo
+        // Troca Dinâmica de Algoritmo e Heurística
         const funcBusca = gameState.currentAlgorithm === 'astar' ? calcularBuscaAStar : calcularBuscaGulosa;
-        const resultadoIA = funcBusca(mapLayout, gameState.enemy, gameState.player);
+        const heuristicaEscolhida = getHeuristic() === 'weak' ? heuristicaFraca : heuristicaForte;
+        
+        const resultadoIA = funcBusca(mapLayout, gameState.enemy, gameState.player, heuristicaEscolhida);
 
         drawAIPath(gameContainer, resultadoIA.caminhoFinal, resultadoIA.nosExpandidos);
+        updateTelemetry(resultadoIA.nosExpandidos.length, resultadoIA.custoTotal, resultadoIA.tempoMs);
 
         // Dá o passo
         if (resultadoIA.caminhoFinal.length > 1) {

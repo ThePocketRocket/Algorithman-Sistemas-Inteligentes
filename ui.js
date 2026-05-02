@@ -1,4 +1,4 @@
-import { setAlgorithm, setTickRate, getAlgorithm, setMap, setPaintTool, setPlayerCooldown } from './state.js';
+import { setAlgorithm, setHeuristic, setTickRate, getAlgorithm, setMap, setPaintTool, setPlayerCooldown } from './state.js';
 
 export function drawGrid(container, mapData) {
     container.innerHTML = '';
@@ -100,6 +100,19 @@ export function drawAIPath(container, pathNodes, expandedNodes) {
 }
 
 /**
+ * Atualiza os valores do painel de telemetria na UI.
+ */
+export function updateTelemetry(nodesCount, totalCost, timeMs) {
+    const elNodes = document.getElementById('telNodes');
+    const elCost = document.getElementById('telCost');
+    const elTime = document.getElementById('telTime');
+    
+    if (elNodes) elNodes.textContent = nodesCount;
+    if (elCost) elCost.textContent = totalCost;
+    if (elTime) elTime.textContent = timeMs;
+}
+
+/**
  * Configura os event listeners do painel de controle e atualiza o estado.
  * @param {Function} onPlayCallback Callback para iniciar/continuar a simulação
  * @param {Function} onRestartCallback Callback para reiniciar a simulação e voltar ao SETUP
@@ -123,6 +136,7 @@ export function setupDashboard(onPlayCallback, onRestartCallback, onMapChangeCal
     }
 
     const algoSelect = document.getElementById('algoSelect');
+    const heuristicSelect = document.getElementById('heuristicSelect');
     const speedRange = document.getElementById('speedRange');
     const speedValue = document.getElementById('speedValue');
     const mapSelect = document.getElementById('mapSelect');
@@ -132,7 +146,8 @@ export function setupDashboard(onPlayCallback, onRestartCallback, onMapChangeCal
     const btnPlay = document.getElementById('btnPlay');
     const btnRestart = document.getElementById('btnRestart');
 
-    algoSelect.addEventListener('change', (e) => setAlgorithm(e.target.value));
+    if (algoSelect) algoSelect.addEventListener('change', (e) => setAlgorithm(e.target.value));
+    if (heuristicSelect) heuristicSelect.addEventListener('change', (e) => setHeuristic(e.target.value));
 
     speedRange.addEventListener('input', (e) => {
         const val = parseInt(e.target.value, 10);

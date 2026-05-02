@@ -23,6 +23,7 @@ export const gameState = {
     player: { x: 1, y: 1 },
     enemy: { x: 13, y: 13 },
     currentAlgorithm: 'astar', // 'astar' ou 'greedy'
+    heuristic: 'strong',       // 'strong' ou 'weak'
     enemyTickRate: 500,        // Velocidade do inimigo em ms
     gamePhase: 'SETUP',        // 'SETUP' ou 'PLAYING'
     currentMap: 'default',     // 'default' ou 'custom'
@@ -31,6 +32,7 @@ export const gameState = {
 };
 
 export function setAlgorithm(algo) { gameState.currentAlgorithm = algo; }
+export function setHeuristic(h) { gameState.heuristic = h; }
 export function setTickRate(rate) { gameState.enemyTickRate = rate; }
 export function setGamePhase(phase) { gameState.gamePhase = phase; }
 export function setMap(mapType) { gameState.currentMap = mapType; }
@@ -38,6 +40,7 @@ export function setPaintTool(tool) { gameState.paintTool = tool; }
 export function setPlayerCooldown(cooldown) { gameState.playerCooldown = cooldown; }
 
 export function getAlgorithm() { return gameState.currentAlgorithm; }
+export function getHeuristic() { return gameState.heuristic; }
 export function getGamePhase() { return gameState.gamePhase; }
 
 /**

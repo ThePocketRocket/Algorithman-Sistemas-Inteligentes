@@ -55,6 +55,13 @@
                 </select>
             </div>
             <div class="control-group">
+                <label for="heuristicSelect">Heurística:</label>
+                <select id="heuristicSelect">
+                    <option value="strong">Heurística Forte (Manhattan)</option>
+                    <option value="weak">Heurística Fraca (Custo Zero)</option>
+                </select>
+            </div>
+            <div class="control-group">
                 <label for="speedRange">Tickrate IA: <span id="speedValue">500</span>ms</label>
                 <input type="range" id="speedRange" min="100" max="1000" step="100" value="500">
             </div>
@@ -75,6 +82,12 @@
 
         <div id="game-container">
             <!-- O grid será injetado aqui dinamicamente pelo ui.js -->
+        </div>
+
+        <div id="telemetryPanel" class="telemetry-panel">
+            <div>Nós Expandidos: <span id="telNodes">0</span></div>
+            <div>Custo Total: <span id="telCost">0</span></div>
+            <div>Tempo: <span id="telTime">0.00</span>ms</div>
         </div>
 
         <!-- Controles Virtuais (D-Pad) -->
