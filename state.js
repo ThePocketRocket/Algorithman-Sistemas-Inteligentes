@@ -28,7 +28,10 @@ export const gameState = {
     gamePhase: 'SETUP',        // 'SETUP' ou 'PLAYING'
     currentMap: 'default',     // 'default' ou 'custom'
     paintTool: 'erase',        // Ferramenta selecionada: 'erase', 'wall', 'slow', 'player', 'enemy'
-    playerCooldown: 150        // Cooldown de movimento do jogador em ms
+    playerCooldown: 150,       // Cooldown de movimento do jogador em ms
+    globalExpandedNodes: 0,
+    globalPathCost: 0,
+    globalExecutionTime: 0
 };
 
 export function setAlgorithm(algo) { gameState.currentAlgorithm = algo; }
@@ -44,11 +47,14 @@ export function getHeuristic() { return gameState.heuristic; }
 export function getGamePhase() { return gameState.gamePhase; }
 
 /**
- * Retorna as coordenadas de ambos os personagens ao padrão.
+ * Retorna as coordenadas de ambos os personagens ao padrão e zera a telemetria.
  */
 export function resetState() {
     gameState.player = { x: 1, y: 1 };
     gameState.enemy = { x: 13, y: 13 };
+    gameState.globalExpandedNodes = 0;
+    gameState.globalPathCost = 0;
+    gameState.globalExecutionTime = 0;
 }
 
 export function loadDefaultMap() {

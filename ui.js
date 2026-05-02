@@ -102,14 +102,21 @@ export function drawAIPath(container, pathNodes, expandedNodes) {
 /**
  * Atualiza os valores do painel de telemetria na UI.
  */
-export function updateTelemetry(nodesCount, totalCost, timeMs) {
+export function updateTelemetry(nodesCount, totalCost, timeMs, globalNodes, globalCost, globalTime) {
     const elNodes = document.getElementById('telNodes');
     const elCost = document.getElementById('telCost');
     const elTime = document.getElementById('telTime');
+    const elGlobalNodes = document.getElementById('telGlobalNodes');
+    const elGlobalCost = document.getElementById('telGlobalCost');
+    const elGlobalTime = document.getElementById('telGlobalTime');
     
     if (elNodes) elNodes.textContent = nodesCount;
     if (elCost) elCost.textContent = totalCost;
     if (elTime) elTime.textContent = timeMs;
+    
+    if (elGlobalNodes) elGlobalNodes.textContent = globalNodes;
+    if (elGlobalCost) elGlobalCost.textContent = globalCost;
+    if (elGlobalTime) elGlobalTime.textContent = globalTime;
 }
 
 /**
@@ -145,9 +152,21 @@ export function setupDashboard(onPlayCallback, onRestartCallback, onMapChangeCal
     const playerSpeedValue = document.getElementById('playerSpeedValue');
     const btnPlay = document.getElementById('btnPlay');
     const btnRestart = document.getElementById('btnRestart');
+    const btnToggleTelemetry = document.getElementById('btnToggleTelemetry');
 
     if (algoSelect) algoSelect.addEventListener('change', (e) => setAlgorithm(e.target.value));
     if (heuristicSelect) heuristicSelect.addEventListener('change', (e) => setHeuristic(e.target.value));
+    
+    if (btnToggleTelemetry) {
+        btnToggleTelemetry.addEventListener('click', () => {
+            const panel = document.getElementById('telemetryPanel');
+            if (panel) panel.classList.toggle('telemetry-visible');
+            
+            // Fechamento automático da sidebar para melhorar a experiência mobile
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.remove('open');
+        });
+    }
 
     speedRange.addEventListener('input', (e) => {
         const val = parseInt(e.target.value, 10);

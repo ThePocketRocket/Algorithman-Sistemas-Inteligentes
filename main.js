@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpa visualização da IA e repinta os personagens em suas posições padrão (ui.js)
         drawAIPath(gameContainer, [], []);
         drawCharacters(gameContainer, gameState.player, gameState.enemy);
+        updateTelemetry(0, 0, "0.00", 0, 0, "0.00");
         
         // Fecha o modal se estiver aberto
         gameOverModal.close();
@@ -101,14 +102,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultadoIA = funcBusca(mapLayout, gameState.enemy, gameState.player, heuristicaEscolhida);
 
         drawAIPath(gameContainer, resultadoIA.caminhoFinal, resultadoIA.nosExpandidos);
-        updateTelemetry(resultadoIA.nosExpandidos.length, resultadoIA.custoTotal, resultadoIA.tempoMs);
 
         // Dá o passo
         if (resultadoIA.caminhoFinal.length > 1) {
             const proxPasso = resultadoIA.caminhoFinal[1];
+            
+            // Soma o custo do terreno para a estatística global
+            const cellVal = mapLayout[proxPasso.y][proxPasso.x];
+            gameState.globalPathCost += (cellVal === 2 ? 5 : 1);
+
             moveEnemy(proxPasso.x, proxPasso.y);
             drawCharacters(gameContainer, gameState.player, gameState.enemy);
         }
+
+        // Acumula Telemetria Global
+        gameState.globalExpandedNodes += resultadoIA.nosExpandidos.length;
+        gameState.globalExecutionTime += parseFloat(resultadoIA.tempoMs);
+
+        updateTelemetry(
+            resultadoIA.nosExpandidos.length, 
+            resultadoIA.custoTotal, 
+            resultadoIA.tempoMs,
+            gameState.globalExpandedNodes,
+            gameState.globalPathCost,
+            gameState.globalExecutionTime.toFixed(2)
+        );
 
         if (checkGameOver()) {
             triggerGameOver();
@@ -123,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (enemyTimeoutId) clearTimeout(enemyTimeoutId);
         
         setTimeout(() => {
-            gameOverModal.showModal();
+            gameOverModal.show();
         }, 50);
     }
 });
