@@ -5,8 +5,8 @@ export function drawGrid(container, mapData) {
     const rows = mapData.length;
     const cols = mapData[0].length;
 
-    container.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
-    container.style.gridTemplateRows = `repeat(${rows}, 30px)`;
+    container.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    container.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {

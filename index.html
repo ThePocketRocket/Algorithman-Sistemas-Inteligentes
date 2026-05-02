@@ -7,6 +7,7 @@
     <title>Pac-Man Minimalista</title>
     <!-- Google Fonts for typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -60,12 +61,16 @@
         </div>
     </aside>
 
-    <button id="btnOpenSidebar" class="btn-floating" aria-label="Abrir Configurações">⚙️ Configurações</button>
+    <button id="btnOpenSidebar" class="btn-floating" aria-label="Abrir Configurações">
+        ⚙️ <span>Configurações</span>
+    </button>
 
     <div class="app-wrapper">
-        <div class="top-bar">
-            <button id="btnPlay" class="btn-primary">PLAY / INICIAR SIMULAÇÃO</button>
-            <button id="btnRestart" class="btn-secondary">Reiniciar Partida</button>
+        <h1 class="game-title">AlgorithMan</h1>
+        
+        <div class="action-buttons">
+            <button id="btnPlay" class="btn-primary">PLAY</button>
+            <button id="btnRestart" class="btn-secondary">Reiniciar</button>
         </div>
 
         <div id="game-container">
