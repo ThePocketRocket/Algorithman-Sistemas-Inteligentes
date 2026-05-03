@@ -204,7 +204,7 @@ export function calcularBuscaGulosa(mapData, startNode, goalNode, heuristica = h
     const t0 = performance.now();
     let openSet = [];
     const closedSet = new Set();
-    const nodeData = {}; 
+    const nodeData = {};
     const nosExpandidos = [];
 
     const startKey = `${startNode.x},${startNode.y}`;
@@ -264,34 +264,3 @@ export function calcularBuscaGulosa(mapData, startNode, goalNode, heuristica = h
     const t1 = performance.now();
     return { caminhoFinal: [], nosExpandidos, custoTotal: 0, tempoMs: (t1 - t0).toFixed(2) };
 }
-
-
-// ==========================================
-// TESTES (Validação no Console)
-// ==========================================
-
-const mapTest = [
-    [1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 1, 2, 1], // Parede no meio, zona de lentidão do outro lado
-    [1, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1]
-];
-const testStart = { x: 1, y: 1 };
-const testGoal = { x: 3, y: 3 };
-
-console.log("=== INICIANDO TESTES DO ai.js ===");
-
-const resultAStar = calcularBuscaAStar(mapTest, testStart, testGoal, heuristicaForte);
-console.log("\n-> Resultado A* (Heurística Forte):");
-console.log("Custo Total:", resultAStar.custoTotal);
-console.log("Quantidade de Nós Expandidos:", resultAStar.nosExpandidos.length);
-console.log("Caminho Final (Coordenadas):", JSON.stringify(resultAStar.caminhoFinal));
-
-const resultGulosa = calcularBuscaGulosa(mapTest, testStart, testGoal, heuristicaForte);
-console.log("\n-> Resultado Busca Gulosa (Heurística Forte):");
-console.log("Custo Total:", resultGulosa.custoTotal);
-console.log("Quantidade de Nós Expandidos:", resultGulosa.nosExpandidos.length);
-console.log("Caminho Final (Coordenadas):", JSON.stringify(resultGulosa.caminhoFinal));
-
-console.log("\n=================================");

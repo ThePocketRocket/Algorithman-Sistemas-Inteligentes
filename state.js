@@ -63,7 +63,7 @@ export const gameState = {
     enemyTickRate: 500,        // Velocidade do inimigo em ms
     gamePhase: 'SETUP',        // 'SETUP' ou 'PLAYING'
     currentMap: 'default',     // 'default' ou 'custom'
-    paintTool: 'erase',        // Ferramenta selecionada: 'erase', 'wall', 'slow', 'player', 'enemy'
+    paintTool: 'none',         // Ferramenta selecionada: 'none', 'erase', 'wall', 'slow', 'player', 'enemy'
     playerCooldown: 150,       // Cooldown de movimento do jogador em ms
     globalExpandedNodes: 0,
     globalPathCost: 0,
@@ -138,6 +138,8 @@ export function loadGreedyKillerMap() {
 }
 
 export function applyPaintTool(x, y) {
+    if (gameState.paintTool === 'none') return false;
+
     // Restrição de Bordas: Ignora qualquer clique na linha/coluna 0 ou máxima
     if (x === 0 || y === 0 || x === mapLayout[0].length - 1 || y === mapLayout.length - 1) {
         return false;
