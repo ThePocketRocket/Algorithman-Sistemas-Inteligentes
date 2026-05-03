@@ -13,15 +13,6 @@
 </head>
 
 <body>
-    <dialog id="gameOverModal" class="modal">
-        <h2
-            style="background: linear-gradient(90deg, #ff3333, #ff6666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            GAME OVER!</h2>
-        <p style="margin-bottom: 2rem;">Você foi pego pelo Inimigo!</p>
-        <button id="btnRetry" class="btn-secondary"
-            style="background: linear-gradient(135deg, #ff3333, #cc0000);">Tentar Novamente</button>
-    </dialog>
-
     <aside id="sidebar" class="sidebar">
         <div class="sidebar-header">
             <h3>Configurações</h3>
@@ -91,8 +82,26 @@
             <button id="btnRestart" class="btn-secondary">Reiniciar</button>
         </div>
 
-        <div id="game-container">
-            <!-- O grid será injetado aqui dinamicamente pelo ui.js -->
+        <div class="board-wrapper">
+            <div id="game-container">
+                <!-- O grid será injetado aqui dinamicamente pelo ui.js -->
+            </div>
+
+            <div id="gameOverModal" class="modal hidden">
+                <h2 style="background: linear-gradient(90deg, #ff3333, #ff6666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    GAME OVER!</h2>
+                <p style="margin-bottom: 2rem;">Você foi pego pelo Inimigo!</p>
+                <button id="btnRetry" class="btn-secondary"
+                    style="background: linear-gradient(135deg, #ff3333, #cc0000);">Tentar Novamente</button>
+            </div>
+
+            <div id="winModal" class="modal hidden">
+                <h2 style="background: linear-gradient(90deg, #4CAF50, #8BC34A); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    VITÓRIA!</h2>
+                <p style="margin-bottom: 2rem;">Estágio Concluído! Você venceu!</p>
+                <button id="btnNext" class="btn-primary"
+                    style="background: linear-gradient(135deg, #4CAF50, #2E7D32);">Continuar</button>
+            </div>
         </div>
 
         <div id="telemetryPanel" class="telemetry-panel">

@@ -6,7 +6,9 @@ import { calcularBuscaAStar, calcularBuscaGulosa, heuristicaForte, heuristicaFra
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById('game-container');
     const gameOverModal = document.getElementById('gameOverModal');
+    const winModal = document.getElementById('winModal');
     const btnRetry = document.getElementById('btnRetry');
+    const btnNext = document.getElementById('btnNext');
 
     let enemyTimeoutId = null;
 
@@ -43,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTelemetry(0, 0, "0.00", 0, 0, "0.00");
         
         // Fecha o modal se estiver aberto
-        gameOverModal.close();
+        gameOverModal.classList.add('hidden');
+        if (winModal) winModal.classList.add('hidden');
         
         // Habilita os controles de construção
         enableBuilderControls();
@@ -91,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnRetry.addEventListener('click', restartGame);
+    if (btnNext) btnNext.addEventListener('click', restartGame);
 
     setupInput((dx, dy) => {
         if (getGamePhase() !== 'PLAYING') return;
@@ -155,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (enemyTimeoutId) clearTimeout(enemyTimeoutId);
         
         setTimeout(() => {
-            gameOverModal.show();
+            gameOverModal.classList.remove('hidden');
         }, 50);
     }
 });
