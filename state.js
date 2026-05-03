@@ -1,18 +1,54 @@
 export const defaultMapTemplate = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1],
     [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 2, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1],
     [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+];
+
+export const mapAStarKiller = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+];
+
+export const mapGreedyKiller = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
@@ -79,6 +115,28 @@ export function loadCustomMap() {
     resetState();
 }
 
+export function loadAStarKillerMap() {
+    for (let y = 0; y < mapAStarKiller.length; y++) {
+        for (let x = 0; x < mapAStarKiller[0].length; x++) {
+            mapLayout[y][x] = mapAStarKiller[y][x];
+        }
+    }
+    resetState();
+    gameState.player = { x: 1, y: 7 };
+    gameState.enemy = { x: 13, y: 13 };
+}
+
+export function loadGreedyKillerMap() {
+    for (let y = 0; y < mapGreedyKiller.length; y++) {
+        for (let x = 0; x < mapGreedyKiller[0].length; x++) {
+            mapLayout[y][x] = mapGreedyKiller[y][x];
+        }
+    }
+    resetState();
+    gameState.player = { x: 7, y: 7 };
+    gameState.enemy = { x: 7, y: 13 };
+}
+
 export function applyPaintTool(x, y) {
     // Restrição de Bordas: Ignora qualquer clique na linha/coluna 0 ou máxima
     if (x === 0 || y === 0 || x === mapLayout[0].length - 1 || y === mapLayout.length - 1) {
@@ -104,7 +162,7 @@ export function applyPaintTool(x, y) {
         gameState.enemy.x = x;
         gameState.enemy.y = y;
     }
-    
+
     return true;
 }
 
@@ -148,6 +206,6 @@ export function moveEnemy(newX, newY) {
  * @returns {boolean} true se as posições forem idênticas.
  */
 export function checkGameOver() {
-    return gameState.player.x === gameState.enemy.x && 
-           gameState.player.y === gameState.enemy.y;
+    return gameState.player.x === gameState.enemy.x &&
+        gameState.player.y === gameState.enemy.y;
 }

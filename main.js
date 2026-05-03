@@ -1,4 +1,4 @@
-import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, getHeuristic } from './state.js';
+import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, loadAStarKillerMap, loadGreedyKillerMap, getHeuristic } from './state.js';
 import { drawGrid, drawCharacters, drawAIPath, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls, updateTelemetry } from './ui.js';
 import { setupInput } from './input.js';
 import { calcularBuscaAStar, calcularBuscaGulosa, heuristicaForte, heuristicaFraca } from './ai.js';
@@ -26,6 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reseta as coordenadas (state.js)
         resetState();
+        // Recarrega o mapa atual para garantir posições específicas se for cenário
+        if (gameState.currentMap === 'default') {
+            loadDefaultMap();
+        } else if (gameState.currentMap === 'custom') {
+            loadCustomMap();
+        } else if (gameState.currentMap === 'astarkiller') {
+            loadAStarKillerMap();
+        } else if (gameState.currentMap === 'greedykiller') {
+            loadGreedyKillerMap();
+        }
         
         // Limpa visualização da IA e repinta os personagens em suas posições padrão (ui.js)
         drawAIPath(gameContainer, [], []);
@@ -51,8 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Aqui reagimos desenhando o mapa atualizado.
         if (gameState.currentMap === 'default') {
             loadDefaultMap();
-        } else {
+        } else if (gameState.currentMap === 'custom') {
             loadCustomMap();
+        } else if (gameState.currentMap === 'astarkiller') {
+            loadAStarKillerMap();
+        } else if (gameState.currentMap === 'greedykiller') {
+            loadGreedyKillerMap();
         }
         drawGrid(gameContainer, mapLayout);
         drawCharacters(gameContainer, gameState.player, gameState.enemy);
