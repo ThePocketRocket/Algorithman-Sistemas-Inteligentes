@@ -106,29 +106,13 @@ body {
     transform: translate(-50%, -50%);
     width: 25%;
     height: 25%;
-    background-color: #ffb8ae; /* Cor do pac-dot */
+    background-color: #ffb8ae;
+    /* Cor do pac-dot */
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(255, 184, 174, 0.5);
     z-index: 1;
 }
 
-/* Personagens */
-.player {
-    background-color: #ffcc00;
-    border-radius: 50%;
-    /* Pac-man is round usually, but requested square, I'll use slightly rounded square */
-    border-radius: 4px;
-    box-shadow: 0 0 10px #ffcc00;
-    transform: scale(0.8);
-    /* Make it slightly smaller than the cell */
-}
-
-.enemy {
-    background-color: #ff3333;
-    border-radius: 4px;
-    box-shadow: 0 0 10px #ff3333;
-    transform: scale(0.8);
-}
 
 /* Modal Styling (Centering and Aesthetics) */
 .modal {
@@ -205,30 +189,14 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(76, 175, 80, 0.3);
+    background-color: rgba(76, 175, 79, 0.2);
     /* Verde translúcido */
     pointer-events: none;
     z-index: 1;
 }
 
 .path-astar {
-    position: relative;
-}
-
-.path-astar::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background-color: #4CAF50;
-    /* Verde forte */
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 2;
-    box-shadow: 0 0 8px #4CAF50;
+    background-color: rgba(76, 175, 80, 0.4) !important;
 }
 
 /* AI Visualization: Greedy (Roxo) */
@@ -243,30 +211,34 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(156, 39, 176, 0.3);
+    background-color: rgba(156, 39, 176, 0.2);
     /* Roxo translúcido */
     pointer-events: none;
     z-index: 1;
 }
 
 .path-greedy {
-    position: relative;
+    background-color: rgba(156, 39, 176, 0.4) !important;
 }
 
-.path-greedy::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background-color: #9C27B0;
-    /* Roxo forte */
+/* Personagens */
+.player {
+    background-color: #ffcc00 !important;
     border-radius: 50%;
-    pointer-events: none;
-    z-index: 2;
-    box-shadow: 0 0 8px #9C27B0;
+    /* Pac-man is round usually, but requested square, I'll use slightly rounded square */
+    border-radius: 4px;
+    box-shadow: 0 0 10px #ffcc00;
+    transform: scale(0.8);
+    /* Make it slightly smaller than the cell */
+    z-index: 5;
+}
+
+.enemy {
+    background-color: #ff3333 !important;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #ff3333;
+    transform: scale(0.8);
+    z-index: 5;
 }
 
 /* Dashboard and Layout */
