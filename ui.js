@@ -99,6 +99,18 @@ export function drawAIPath(container, pathNodes, expandedNodes) {
     });
 }
 
+export function drawDots(container, dots) {
+    const existingDots = container.querySelectorAll('.dot');
+    existingDots.forEach(el => el.classList.remove('dot'));
+    
+    if (!dots) return;
+
+    dots.forEach(dot => {
+        const cell = container.querySelector(`.cell[data-x="${dot.x}"][data-y="${dot.y}"]`);
+        if (cell) cell.classList.add('dot');
+    });
+}
+
 /**
  * Atualiza os valores do painel de telemetria na UI.
  */

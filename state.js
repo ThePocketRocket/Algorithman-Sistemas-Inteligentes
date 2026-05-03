@@ -67,7 +67,10 @@ export const gameState = {
     playerCooldown: 150,       // Cooldown de movimento do jogador em ms
     globalExpandedNodes: 0,
     globalPathCost: 0,
-    globalExecutionTime: 0
+    globalExecutionTime: 0,
+    dots: [],
+    totalDots: 0,
+    collectedDots: 0
 };
 
 export function setAlgorithm(algo) { gameState.currentAlgorithm = algo; }
@@ -91,6 +94,9 @@ export function resetState() {
     gameState.globalExpandedNodes = 0;
     gameState.globalPathCost = 0;
     gameState.globalExecutionTime = 0;
+    gameState.dots = [];
+    gameState.totalDots = 0;
+    gameState.collectedDots = 0;
 }
 
 export function loadDefaultMap() {
@@ -210,4 +216,34 @@ export function moveEnemy(newX, newY) {
 export function checkGameOver() {
     return gameState.player.x === gameState.enemy.x &&
         gameState.player.y === gameState.enemy.y;
+}
+
+export function generateDots() {
+    gameState.dots = [];
+    for (let y = 0; y < mapLayout.length; y++) {
+        for (let x = 0; x < mapLayout[y].length; x++) {
+            if (mapLayout[y][x] === 0) {
+                if ((x === gameState.player.x && y === gameState.player.y) || 
+                    (x === gameState.enemy.x && y === gameState.enemy.y)) {
+                    continue;
+                }
+                gameState.dots.push({ x, y });
+            }
+        }
+    }
+    gameState.totalDots = gameState.dots.length;
+    gameState.collectedDots = 0;
+}
+
+export function collectDot(x, y) {
+    const dotIndex = gameState.dots.findIndex(d => d.x === x && d.y === y);
+    if (dotIndex !== -1) {
+        gameState.dots.splice(dotIndex, 1);
+        gameState.collectedDots++;
+        
+        if (gameState.collectedDots > 0 && gameState.collectedDots === gameState.totalDots) {
+            return true;
+        }
+    }
+    return false;
 }

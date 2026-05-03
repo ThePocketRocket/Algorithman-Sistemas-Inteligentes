@@ -1,5 +1,5 @@
-import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, loadAStarKillerMap, loadGreedyKillerMap, getHeuristic } from './state.js';
-import { drawGrid, drawCharacters, drawAIPath, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls, updateTelemetry } from './ui.js';
+import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, loadAStarKillerMap, loadGreedyKillerMap, getHeuristic, generateDots, collectDot } from './state.js';
+import { drawGrid, drawCharacters, drawAIPath, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls, updateTelemetry, drawDots } from './ui.js';
 import { setupInput } from './input.js';
 import { calcularBuscaAStar, calcularBuscaGulosa, heuristicaForte, heuristicaFraca } from './ai.js';
 
@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function startGame() {
         setGamePhase('PLAYING');
         disableBuilderControls();
+        generateDots();
+        drawDots(gameContainer, gameState.dots);
         console.log("Fase: PLAYING! Fuja do inimigo!");
         loopInimigo();
     }
@@ -41,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Limpa visualização da IA e repinta os personagens em suas posições padrão (ui.js)
         drawAIPath(gameContainer, [], []);
+        drawDots(gameContainer, []);
         drawCharacters(gameContainer, gameState.player, gameState.enemy);
         updateTelemetry(0, 0, "0.00", 0, 0, "0.00");
         
@@ -104,7 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (moveuComSucesso) {
             drawCharacters(gameContainer, gameState.player, gameState.enemy);
             
-            if (checkGameOver()) {
+            const venceu = collectDot(gameState.player.x, gameState.player.y);
+            drawDots(gameContainer, gameState.dots);
+            
+            if (venceu) {
+                triggerVictory();
+            } else if (checkGameOver()) {
                 triggerGameOver();
             }
         }
@@ -160,6 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             gameOverModal.classList.remove('hidden');
+        }, 50);
+    }
+
+    function triggerVictory() {
+        setGamePhase('SETUP'); // Para tudo
+        if (enemyTimeoutId) clearTimeout(enemyTimeoutId);
+        
+        setTimeout(() => {
+            if (winModal) winModal.classList.remove('hidden');
         }, 50);
     }
 });
