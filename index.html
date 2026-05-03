@@ -26,7 +26,8 @@
                     <option value="default">Mapa Padrão</option>
                     <option value="custom">Mapa Customizado</option>
                     <option value="astarkiller">Cenário: O Pântano (Fraqueza do A*)</option>
-                    <option value="greedykiller">Cenário: Armadilha Côncava (Fraqueza da Gulosa)</option>
+                    <option value="greedykiller">Cenário: Armadilha Côncava (Fraqueza da Busca Gulosa)</option>
+                    <option value="showdown">Nível Final: A* vs Busca Gulosa</option>
                 </select>
             </div>
             <div class="control-group">
@@ -88,7 +89,8 @@
             </div>
 
             <div id="gameOverModal" class="modal hidden">
-                <h2 style="background: linear-gradient(90deg, #ff3333, #ff6666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <h2
+                    style="background: linear-gradient(90deg, #ff3333, #ff6666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                     GAME OVER!</h2>
                 <p style="margin-bottom: 2rem;">Você foi pego pelo Inimigo!</p>
                 <button id="btnRetry" class="btn-secondary"
@@ -96,7 +98,8 @@
             </div>
 
             <div id="winModal" class="modal hidden">
-                <h2 style="background: linear-gradient(90deg, #4CAF50, #8BC34A); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <h2
+                    style="background: linear-gradient(90deg, #4CAF50, #8BC34A); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                     VITÓRIA!</h2>
                 <p style="margin-bottom: 2rem;">Estágio Concluído! Você venceu!</p>
                 <button id="btnNext" class="btn-primary"

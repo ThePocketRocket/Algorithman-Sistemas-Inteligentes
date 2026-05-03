@@ -46,11 +46,11 @@ export function setupGridClick(container, onCellClick) {
     });
 }
 
-export function drawCharacters(container, playerState, enemyState) {
+export function drawCharacters(container, playerState, enemiesState) {
     // Clear previous characters classes from cells
-    const existingChars = container.querySelectorAll('.player, .enemy');
+    const existingChars = container.querySelectorAll('.player, .enemy, .enemy-greedy');
     existingChars.forEach(el => {
-        el.classList.remove('player', 'enemy');
+        el.classList.remove('player', 'enemy', 'enemy-greedy');
     });
 
     // Draw Player
@@ -59,11 +59,23 @@ export function drawCharacters(container, playerState, enemyState) {
         playerCell.classList.add('player');
     }
 
-    // Draw Enemy
-    const enemyCell = container.querySelector(`.cell[data-x="${enemyState.x}"][data-y="${enemyState.y}"]`);
-    if (enemyCell) {
-        enemyCell.classList.add('enemy');
-    }
+    // Draw Enemies
+    enemiesState.forEach(enemy => {
+        const enemyCell = container.querySelector(`.cell[data-x="${enemy.x}"][data-y="${enemy.y}"]`);
+        if (enemyCell) {
+            enemyCell.classList.add('enemy');
+            if (enemy.type === 'greedy' || enemy.id === 'greedy') {
+                enemyCell.classList.add('enemy-greedy');
+            }
+        }
+    });
+}
+
+export function clearAIVisuals(container) {
+    const oldVisuals = container.querySelectorAll('.path-astar, .expanded-astar, .path-greedy, .expanded-greedy');
+    oldVisuals.forEach(el => {
+        el.classList.remove('path-astar', 'expanded-astar', 'path-greedy', 'expanded-greedy');
+    });
 }
 
 /**
@@ -72,17 +84,11 @@ export function drawCharacters(container, playerState, enemyState) {
  * @param {Array} pathNodes Array de coordenadas do caminho final
  * @param {Array} expandedNodes Array de coordenadas de nós explorados
  */
-export function drawAIPath(container, pathNodes, expandedNodes) {
-    // 1. Limpa os visuais da IA do frame anterior
-    const oldVisuals = container.querySelectorAll('.path-astar, .expanded-astar, .path-greedy, .expanded-greedy');
-    oldVisuals.forEach(el => {
-        el.classList.remove('path-astar', 'expanded-astar', 'path-greedy', 'expanded-greedy');
-    });
-
-    if (!pathNodes || !expandedNodes) return; // Permite limpar passando arrays vazios
+export function drawAIPath(container, pathNodes, expandedNodes, algoOverride) {
+    if (!pathNodes || !expandedNodes) return; // Permite retornar sem fazer nada se estiver vazio
 
     // Pega o algoritmo atual para decidir as cores
-    const algo = getAlgorithm();
+    const algo = algoOverride || getAlgorithm();
     const expandedClass = `expanded-${algo}`;
     const pathClass = `path-${algo}`;
 

@@ -7,7 +7,7 @@ export const defaultMapTemplate = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 2, 1, 1, 1],
+    [1, 1, 1, 2, 1, 1, 0, 1, 0, 1, 1, 2, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
     [1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 1],
@@ -57,7 +57,7 @@ export const mapLayout = JSON.parse(JSON.stringify(defaultMapTemplate));
 
 export const gameState = {
     player: { x: 1, y: 1 },
-    enemy: { x: 13, y: 13 },
+    enemies: [{ id: 'e1', type: 'astar', x: 13, y: 13 }],
     currentAlgorithm: 'astar', // 'astar' ou 'greedy'
     heuristic: 'strong',       // 'strong' ou 'weak'
     enemyTickRate: 500,        // Velocidade do inimigo em ms
@@ -90,7 +90,7 @@ export function getGamePhase() { return gameState.gamePhase; }
  */
 export function resetState() {
     gameState.player = { x: 1, y: 1 };
-    gameState.enemy = { x: 13, y: 13 };
+    gameState.enemies = [{ id: 'e1', type: 'astar', x: 13, y: 13 }];
     gameState.globalExpandedNodes = 0;
     gameState.globalPathCost = 0;
     gameState.globalExecutionTime = 0;
@@ -129,7 +129,7 @@ export function loadAStarKillerMap() {
     }
     resetState();
     gameState.player = { x: 1, y: 7 };
-    gameState.enemy = { x: 13, y: 13 };
+    gameState.enemies = [{ id: 'e1', type: 'astar', x: 13, y: 13 }];
 }
 
 export function loadGreedyKillerMap() {
@@ -140,7 +140,21 @@ export function loadGreedyKillerMap() {
     }
     resetState();
     gameState.player = { x: 7, y: 7 };
-    gameState.enemy = { x: 7, y: 13 };
+    gameState.enemies = [{ id: 'e1', type: 'greedy', x: 7, y: 13 }];
+}
+
+export function loadShowdownMap() {
+    for (let y = 0; y < defaultMapTemplate.length; y++) {
+        for (let x = 0; x < defaultMapTemplate[0].length; x++) {
+            mapLayout[y][x] = defaultMapTemplate[y][x];
+        }
+    }
+    resetState();
+    gameState.player = { x: 7, y: 1 };
+    gameState.enemies = [
+        { id: 'astar', type: 'astar', x: 1, y: 13 },
+        { id: 'greedy', type: 'greedy', x: 13, y: 13 }
+    ];
 }
 
 export function applyPaintTool(x, y) {
@@ -153,7 +167,7 @@ export function applyPaintTool(x, y) {
 
     const tool = gameState.paintTool;
     const isPlayerPos = (x === gameState.player.x && y === gameState.player.y);
-    const isEnemyPos = (x === gameState.enemy.x && y === gameState.enemy.y);
+    const isEnemyPos = gameState.enemies.some(e => e.x === x && e.y === y);
     const isWall = (mapLayout[y][x] === 1);
 
     if (tool === 'wall' || tool === 'slow') {
@@ -167,8 +181,10 @@ export function applyPaintTool(x, y) {
         gameState.player.y = y;
     } else if (tool === 'enemy') {
         if (isWall || isPlayerPos) return false;
-        gameState.enemy.x = x;
-        gameState.enemy.y = y;
+        if (gameState.enemies.length > 0) {
+            gameState.enemies[0].x = x;
+            gameState.enemies[0].y = y;
+        }
     }
 
     return true;
@@ -204,9 +220,11 @@ export function movePlayer(dx, dy) {
  * @param {number} newX 
  * @param {number} newY 
  */
-export function moveEnemy(newX, newY) {
-    gameState.enemy.x = newX;
-    gameState.enemy.y = newY;
+export function moveEnemy(index, newX, newY) {
+    if (gameState.enemies[index]) {
+        gameState.enemies[index].x = newX;
+        gameState.enemies[index].y = newY;
+    }
 }
 
 /**
@@ -214,8 +232,7 @@ export function moveEnemy(newX, newY) {
  * @returns {boolean} true se as posições forem idênticas.
  */
 export function checkGameOver() {
-    return gameState.player.x === gameState.enemy.x &&
-        gameState.player.y === gameState.enemy.y;
+    return gameState.enemies.some(e => e.x === gameState.player.x && e.y === gameState.player.y);
 }
 
 export function generateDots() {
@@ -223,8 +240,8 @@ export function generateDots() {
     for (let y = 0; y < mapLayout.length; y++) {
         for (let x = 0; x < mapLayout[y].length; x++) {
             if (mapLayout[y][x] === 0) {
-                if ((x === gameState.player.x && y === gameState.player.y) || 
-                    (x === gameState.enemy.x && y === gameState.enemy.y)) {
+                if ((x === gameState.player.x && y === gameState.player.y) ||
+                    gameState.enemies.some(e => e.x === x && e.y === y)) {
                     continue;
                 }
                 gameState.dots.push({ x, y });
@@ -240,7 +257,7 @@ export function collectDot(x, y) {
     if (dotIndex !== -1) {
         gameState.dots.splice(dotIndex, 1);
         gameState.collectedDots++;
-        
+
         if (gameState.collectedDots > 0 && gameState.collectedDots === gameState.totalDots) {
             return true;
         }

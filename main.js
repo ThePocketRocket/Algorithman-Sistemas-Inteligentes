@@ -1,5 +1,5 @@
-import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, loadAStarKillerMap, loadGreedyKillerMap, getHeuristic, generateDots, collectDot } from './state.js';
-import { drawGrid, drawCharacters, drawAIPath, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls, updateTelemetry, drawDots } from './ui.js';
+import { mapLayout, gameState, movePlayer, moveEnemy, checkGameOver, resetState, getGamePhase, setGamePhase, applyPaintTool, loadDefaultMap, loadCustomMap, loadAStarKillerMap, loadGreedyKillerMap, getHeuristic, generateDots, collectDot, loadShowdownMap } from './state.js';
+import { drawGrid, drawCharacters, drawAIPath, clearAIVisuals, setupDashboard, setupGridClick, updateCell, disableBuilderControls, enableBuilderControls, updateTelemetry, drawDots } from './ui.js';
 import { setupInput } from './input.js';
 import { calcularBuscaAStar, calcularBuscaGulosa, heuristicaForte, heuristicaFraca } from './ai.js';
 
@@ -39,12 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
             loadAStarKillerMap();
         } else if (gameState.currentMap === 'greedykiller') {
             loadGreedyKillerMap();
+        } else if (gameState.currentMap === 'showdown') {
+            loadShowdownMap();
         }
         
         // Limpa visualização da IA e repinta os personagens em suas posições padrão (ui.js)
-        drawAIPath(gameContainer, [], []);
+        clearAIVisuals(gameContainer);
         drawDots(gameContainer, []);
-        drawCharacters(gameContainer, gameState.player, gameState.enemy);
+        drawCharacters(gameContainer, gameState.player, gameState.enemies);
         updateTelemetry(0, 0, "0.00", 0, 0, "0.00");
         
         // Fecha o modal se estiver aberto
@@ -59,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicializa a interface visual
     drawGrid(gameContainer, mapLayout);
-    drawCharacters(gameContainer, gameState.player, gameState.enemy);
+    drawCharacters(gameContainer, gameState.player, gameState.enemies);
 
     // Conecta o dashboard passando as funções de Play, Restart e Mudança de Mapa
     setupDashboard(startGame, restartGame, () => {
@@ -73,10 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
             loadAStarKillerMap();
         } else if (gameState.currentMap === 'greedykiller') {
             loadGreedyKillerMap();
+        } else if (gameState.currentMap === 'showdown') {
+            loadShowdownMap();
         }
         drawGrid(gameContainer, mapLayout);
-        drawCharacters(gameContainer, gameState.player, gameState.enemy);
-        drawAIPath(gameContainer, [], []); // Limpa a IA
+        drawCharacters(gameContainer, gameState.player, gameState.enemies);
+        clearAIVisuals(gameContainer); // Limpa a IA
     });
 
     // Conecta o clique no grid para o Construtor
@@ -92,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Como pode ter colocado jogador ou inimigo em cima de paredes (e apagado a parede),
             // a forma mais segura é atualizar a célula também e redesenhar os personagens
             updateCell(gameContainer, x, y, mapLayout[y][x]);
-            drawCharacters(gameContainer, gameState.player, gameState.enemy);
+            drawCharacters(gameContainer, gameState.player, gameState.enemies);
         }
     });
 
@@ -105,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const moveuComSucesso = movePlayer(dx, dy);
 
         if (moveuComSucesso) {
-            drawCharacters(gameContainer, gameState.player, gameState.enemy);
+            drawCharacters(gameContainer, gameState.player, gameState.enemies);
             
             const venceu = collectDot(gameState.player.x, gameState.player.y);
             drawDots(gameContainer, gameState.dots);
@@ -121,34 +125,47 @@ document.addEventListener('DOMContentLoaded', () => {
     function loopInimigo() {
         if (getGamePhase() !== 'PLAYING') return;
 
-        // Troca Dinâmica de Algoritmo e Heurística
-        const funcBusca = gameState.currentAlgorithm === 'astar' ? calcularBuscaAStar : calcularBuscaGulosa;
-        const heuristicaEscolhida = getHeuristic() === 'weak' ? heuristicaFraca : heuristicaForte;
-        
-        const resultadoIA = funcBusca(mapLayout, gameState.enemy, gameState.player, heuristicaEscolhida);
+        let iterExpandedNodes = 0;
+        let iterCost = 0;
+        let iterTimeMs = 0;
 
-        drawAIPath(gameContainer, resultadoIA.caminhoFinal, resultadoIA.nosExpandidos);
+        clearAIVisuals(gameContainer);
 
-        // Dá o passo
-        if (resultadoIA.caminhoFinal.length > 1) {
-            const proxPasso = resultadoIA.caminhoFinal[1];
-            
-            // Soma o custo do terreno para a estatística global
-            const cellVal = mapLayout[proxPasso.y][proxPasso.x];
-            gameState.globalPathCost += (cellVal === 2 ? 5 : 1);
+        gameState.enemies.forEach((enemy, index) => {
+            let funcBusca;
+            // O inimigo genérico (e1) obedece ao dropdown da UI. Os demais seguem seu type próprio.
+            if (enemy.id === 'e1') {
+                funcBusca = gameState.currentAlgorithm === 'astar' ? calcularBuscaAStar : calcularBuscaGulosa;
+            } else {
+                funcBusca = enemy.type === 'astar' ? calcularBuscaAStar : calcularBuscaGulosa;
+            }
 
-            moveEnemy(proxPasso.x, proxPasso.y);
-            drawCharacters(gameContainer, gameState.player, gameState.enemy);
-        }
+            const heuristicaEscolhida = enemy.id === 'e1' ? (getHeuristic() === 'weak' ? heuristicaFraca : heuristicaForte) : heuristicaForte;
+            const resultadoIA = funcBusca(mapLayout, enemy, gameState.player, heuristicaEscolhida);
 
-        // Acumula Telemetria Global
-        gameState.globalExpandedNodes += resultadoIA.nosExpandidos.length;
-        gameState.globalExecutionTime += parseFloat(resultadoIA.tempoMs);
+            const algoToDraw = enemy.id === 'e1' ? gameState.currentAlgorithm : enemy.type;
+            drawAIPath(gameContainer, resultadoIA.caminhoFinal, resultadoIA.nosExpandidos, algoToDraw);
+
+            if (resultadoIA.caminhoFinal.length > 1) {
+                const proxPasso = resultadoIA.caminhoFinal[1];
+                const cellVal = mapLayout[proxPasso.y][proxPasso.x];
+                gameState.globalPathCost += (cellVal === 2 ? 5 : 1);
+                moveEnemy(index, proxPasso.x, proxPasso.y);
+            }
+
+            iterExpandedNodes += resultadoIA.nosExpandidos.length;
+            iterCost += resultadoIA.custoTotal;
+            iterTimeMs += parseFloat(resultadoIA.tempoMs);
+            gameState.globalExpandedNodes += resultadoIA.nosExpandidos.length;
+            gameState.globalExecutionTime += parseFloat(resultadoIA.tempoMs);
+        });
+
+        drawCharacters(gameContainer, gameState.player, gameState.enemies);
 
         updateTelemetry(
-            resultadoIA.nosExpandidos.length, 
-            resultadoIA.custoTotal, 
-            resultadoIA.tempoMs,
+            iterExpandedNodes, 
+            iterCost, 
+            iterTimeMs.toFixed(2),
             gameState.globalExpandedNodes,
             gameState.globalPathCost,
             gameState.globalExecutionTime.toFixed(2)
